@@ -1,118 +1,333 @@
 <!DOCTYPE html>
 <html lang="ka">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KINTECH | Premium Quality</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --main-color: #bcd821; --dark: #1a1a1a; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        header { padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
-        .logo img { height: 45px; object-fit: contain; }
-        
-        .cart-icon { position: relative; cursor: pointer; font-size: 1.6rem; transition: 0.3s; }
-        #c-count { position: absolute; top: -8px; right: -10px; background: var(--main-color); color: #000; font-size: 11px; padding: 2px 6px; border-radius: 50%; font-weight: bold; }
+        :root {
+            --main-color: #bcd821;
+            --dark: #1a1a1a;
+        }
 
-        .hero { height: 400px; background: #000; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        #hero-video { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
-        .hero h1 { position: relative; z-index: 2; color: #fff; font-size: 3.5rem; letter-spacing: 4px; text-transform: uppercase; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding: 50px 8%; background: #fdfdfd; }
-        
-        .card { background: #fff; border-radius: 20px; padding: 25px; text-align: center; border: 1px solid #f0f0f0; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; min-height: 480px; }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.07); }
-        
+        header {
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo img {
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.6rem;
+            transition: 0.3s;
+        }
+
+        #c-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--main-color);
+            color: #000;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .hero {
+            height: 400px;
+            background: #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #hero-video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+        }
+
+        .hero h1 {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+            font-size: 3.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 50px 8%;
+            background: #fdfdfd;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 480px;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.07);
+        }
+
         /* ფოტოების "გაშეშება" - რომ აღარ იხტუნაოს */
-        .img-container { width: 100%; height: 220px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; background: #f9f9f9; border-radius: 12px; overflow: hidden; }
-        .card img { max-width: 90%; max-height: 90%; object-fit: contain; transition: 0.5s; }
-        
-        .card h3 { font-size: 1.1rem; color: #333; margin-bottom: 10px; height: 50px; overflow: hidden; }
-        .price { font-size: 1.6rem; font-weight: bold; color: var(--dark); margin-bottom: 20px; }
-        
-        .btn { background: var(--dark); color: #fff; border: none; padding: 14px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn:hover { background: #000; transform: scale(1.02); }
+        .img-container {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .card img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            transition: 0.5s;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 10px;
+            height: 50px;
+            overflow: hidden;
+        }
+
+        .price {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: var(--dark);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #000;
+            transform: scale(1.02);
+        }
 
         /* ადმინ პანელის სტილი */
-        .admin-box { display: none; margin-top: 15px; padding: 10px; background: #f1f1f1; border-radius: 10px; border: 1px dashed #bbb; }
-        .admin-box input { width: 100%; margin-bottom: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
-        .save-btn { background: #444; color: white; border: none; padding: 8px; width: 100%; border-radius: 6px; cursor: pointer; }
+        .admin-box {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 10px;
+            border: 1px dashed #bbb;
+        }
+
+        .admin-box input {
+            width: 100%;
+            margin-bottom: 8px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .save-btn {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+        }
 
         /* კალათის სტილი */
-        .sidebar { position: fixed; right: -420px; top: 0; width: 400px; height: 100%; background: #fff; z-index: 2000; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); padding: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
-        .sidebar.open { right: 0; }
-        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
-        
-        .wa-btn { background: #25d366; color: white; padding: 20px; width: 100%; border-radius: 15px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        
-        .admin-trigger { position: fixed; bottom: 10px; left: 10px; opacity: 0.05; cursor: pointer; font-size: 10px; border: none; background: none; }
-        
-        @media (max-width: 768px) { .sidebar { width: 100%; right: -100%; } .hero h1 { font-size: 2rem; } }
+        .sidebar {
+            position: fixed;
+            right: -420px;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background: #fff;
+            z-index: 2000;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 40px;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .wa-btn {
+            background: #25d366;
+            color: white;
+            padding: 20px;
+            width: 100%;
+            border-radius: 15px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .admin-trigger {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            opacity: 0.05;
+            cursor: pointer;
+            font-size: 10px;
+            border: none;
+            background: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<header>
-    <div class="logo">
-        <img src="logo.png" alt="KINTECH" onerror="this.src='https://via.placeholder.com/150x50?text=KINTECH'">
-    </div>
-    <div class="cart-icon" onclick="toggleCart()">
-        <i class="fa-solid fa-bag-shopping"></i>
-        <span id="c-count">0</span>
-    </div>
-</header>
-
-<section class="hero">
-    <video autoplay muted loop playsinline id="hero-video">
-        <source src="hero_cooking.mp4" type="video/mp4">
-    </video>
-    <h1>PREMIUM QUALITY</h1>
-</section>
-
-<div class="grid" id="products-grid"></div>
-
-<div id="side" class="sidebar">
-    <div class="cart-header">
-        <h2>შენი კალათა</h2>
-        <i class="fa-solid fa-xmark" onclick="toggleCart()" style="cursor:pointer; font-size:1.5rem;"></i>
-    </div>
-    <div id="cart-content" style="max-height: 60vh; overflow-y: auto;"></div>
-    <div style="margin-top: auto; padding-top: 20px;">
-        <div style="display:flex; justify-content:space-between; font-size:1.4rem; font-weight:bold;">
-            <span>ჯამი:</span> <span id="total-val">0</span> ₾
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="KINTECH" onerror="this.src='https://via.placeholder.com/150x50?text=KINTECH'">
         </div>
-        <button class="wa-btn" onclick="orderNow()">
-            <i class="fa-brands fa-whatsapp"></i> შეკვეთა WhatsApp-ზე
-        </button>
+        <div class="cart-icon" onclick="toggleCart()">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span id="c-count">0</span>
+        </div>
+    </header>
+
+    <section class="hero">
+        <video autoplay muted loop playsinline id="hero-video"
+            style="position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.5;">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-cooking-with-fresh-ingredients-2324-large.mp4"
+                type="video/mp4">
+            შენი ბრაუზერი არ უჭერს მხარს ვიდეოს.
+        </video>
+        <h1
+            style="position: relative; z-index: 2; color: #fff; font-size: 3.5rem; letter-spacing: 4px; text-transform: uppercase; text-shadow: 2px 2px 10px rgba(0,0,0,0.5);">
+            PREMIUM QUALITY</h1>
+    </section>
+
+    <div class="grid" id="products-grid"></div>
+
+    <div id="side" class="sidebar">
+        <div class="cart-header">
+            <h2>შენი კალათა</h2>
+            <i class="fa-solid fa-xmark" onclick="toggleCart()" style="cursor:pointer; font-size:1.5rem;"></i>
+        </div>
+        <div id="cart-content" style="max-height: 60vh; overflow-y: auto;"></div>
+        <div style="margin-top: auto; padding-top: 20px;">
+            <div style="display:flex; justify-content:space-between; font-size:1.4rem; font-weight:bold;">
+                <span>ჯამი:</span> <span id="total-val">0</span> ₾
+            </div>
+            <button class="wa-btn" onclick="orderNow()">
+                <i class="fa-brands fa-whatsapp"></i> შეკვეთა WhatsApp-ზე
+            </button>
+        </div>
     </div>
-</div>
 
-<button class="admin-trigger" onclick="checkAdmin()">Admin</button>
+    <button class="admin-trigger" onclick="checkAdmin()">Admin</button>
 
-<script>
-    // მონაცემების ბაზა
-    const fallback = [
-        {id: 1, name: "Sokany Air Fryer AF-001", price: "185", img: "https://m.media-amazon.com/images/I/61K8PjKj-FL._AC_SL1500_.jpg"},
-        {id: 2, name: "Sokany Coffee Maker", price: "125", img: "https://m.media-amazon.com/images/I/71m6k-O+NCL._AC_SL1500_.jpg"}
-    ];
+    <script>
+        // მონაცემების ბაზა
+        const fallback = [
+            { id: 1, name: "Sokany Air Fryer AF-001", price: "185", img: "https://m.media-amazon.com/images/I/61K8PjKj-FL._AC_SL1500_.jpg" },
+            { id: 2, name: "Sokany Coffee Maker", price: "125", img: "https://m.media-amazon.com/images/I/71m6k-O+NCL._AC_SL1500_.jpg" }
+        ];
 
-    let db = JSON.parse(localStorage.getItem('kintech_final_db')) || fallback;
-    
-    // ვავსებთ 36-მდე
-    if(db.length < 36) {
-        for(let i=db.length+1; i<=36; i++) {
-            db.push({id: i, name: "Sokany პროდუქტი " + i, price: "0", img: ""});
+        let db = JSON.parse(localStorage.getItem('kintech_final_db')) || fallback;
+
+        // ვავსებთ 36-მდე
+        if (db.length < 36) {
+            for (let i = db.length + 1; i <= 36; i++) {
+                db.push({ id: i, name: "Sokany პროდუქტი " + i, price: "0", img: "" });
+            }
         }
-    }
 
-    let cart = [];
-    let editMode = false;
+        let cart = [];
+        let editMode = false;
 
-    function render() {
-        const grid = document.getElementById('products-grid');
-        grid.innerHTML = db.map(p => `
+        function render() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = db.map(p => `
             <div class="card">
                 <div class="img-container">
                     <img src="${p.img || 'https://via.placeholder.com/200?text=No+Image'}" onerror="this.src='https://via.placeholder.com/200?text=Error'">
@@ -129,64 +344,65 @@
                 </div>
             </div>
         `).join('');
-    }
+        }
 
-    function checkAdmin() {
-        if(prompt("შეიყვანეთ პაროლი:") === "1234") {
-            editMode = !editMode;
+        function checkAdmin() {
+            if (prompt("შეიყვანეთ პაროლი:") === "5555") {
+                editMode = !editMode;
+                render();
+            }
+        }
+
+        function updateItem(id) {
+            let idx = db.findIndex(x => x.id === id);
+            db[idx].name = document.getElementById(`n-${id}`).value;
+            db[idx].price = document.getElementById(`p-${id}`).value;
+            db[idx].img = document.getElementById(`i-${id}`).value;
+            localStorage.setItem('kintech_final_db', JSON.stringify(db));
+            alert("მონაცემები წარმატებით შეინახა!");
             render();
         }
-    }
 
-    function updateItem(id) {
-        let idx = db.findIndex(x => x.id === id);
-        db[idx].name = document.getElementById(`n-${id}`).value;
-        db[idx].price = document.getElementById(`p-${id}`).value;
-        db[idx].img = document.getElementById(`i-${id}`).value;
-        localStorage.setItem('kintech_final_db', JSON.stringify(db));
-        alert("მონაცემები წარმატებით შეინახა!");
-        render();
-    }
+        function addToCart(id) {
+            let p = db.find(x => x.id === id);
+            cart.push({ ...p, cartId: Date.now() });
+            updateUI();
+            document.getElementById('side').classList.add('open');
+        }
 
-    function addToCart(id) {
-        let p = db.find(x => x.id === id);
-        cart.push({...p, cartId: Date.now()});
-        updateUI();
-        document.getElementById('side').classList.add('open');
-    }
-
-    function updateUI() {
-        let sum = 0;
-        document.getElementById('cart-content').innerHTML = cart.map(i => {
-            sum += parseFloat(i.price) || 0;
-            return `
+        function updateUI() {
+            let sum = 0;
+            document.getElementById('cart-content').innerHTML = cart.map(i => {
+                sum += parseFloat(i.price) || 0;
+                return `
                 <div class="cart-item">
                     <span>${i.name}</span>
                     <b>${i.price} ₾</b>
                     <i class="fa-solid fa-trash" onclick="remove(${i.cartId})" style="color:#ff4444; cursor:pointer"></i>
                 </div>
             `;
-        }).join('');
-        document.getElementById('c-count').innerText = cart.length;
-        document.getElementById('total-val').innerText = sum.toFixed(2);
-    }
+            }).join('');
+            document.getElementById('c-count').innerText = cart.length;
+            document.getElementById('total-val').innerText = sum.toFixed(2);
+        }
 
-    function remove(cid) {
-        cart = cart.filter(x => x.cartId !== cid);
-        updateUI();
-    }
+        function remove(cid) {
+            cart = cart.filter(x => x.cartId !== cid);
+            updateUI();
+        }
 
-    function toggleCart() { document.getElementById('side').classList.toggle('open'); }
+        function toggleCart() { document.getElementById('side').classList.toggle('open'); }
 
-    function orderNow() {
-        if(cart.length === 0) return alert("კალათა ცარიელია!");
-        let msg = "გამარჯობა, მსურს შეკვეთა:\n" + cart.map(i => `- ${i.name} (${i.price} ₾)`).join("\n");
-        // შეცვალე 9955XXXXXXXX შენი ნომრით!
-        window.open("https://wa.me/9955XXXXXXXX?text=" + encodeURIComponent(msg));
-    }
+        function orderNow() {
+            if (cart.length === 0) return alert("კალათა ცარიელია!");
+            let msg = "გამარჯობა, მსურს შეკვეთა:\n" + cart.map(i => `- ${i.name} (${i.price} ₾)`).join("\n");
+            // შეცვალე 9955XXXXXXXX შენი ნომრით!
+            window.open("https://wa.me/9955595431740?text=" + encodeURIComponent(msg));
+        }
 
-    render();
-</script>
+        render();
+    </script>
 
 </body>
+
 </html>
