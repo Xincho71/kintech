@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ka">
+
+<head>
+    <meta charset="UTF-8">
+    <title>KINTECH | Premium Quality</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        header {
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo img {
+            height: 45px;
+        }
+
+        .hero {
+            height: 350px;
+            background: #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        #hero-video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            z-index: 1;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+            padding: 40px 8%;
+        }
+
+        .card {
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            background: #fff;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .card img {
+            max-width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-edit {
+            display: none;
+            background: #f4f4f4;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 1px dashed #ccc;
+        }
+
+        .admin-edit input {
+            width: 100%;
+            margin-bottom: 5px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .sidebar {
+            position: fixed;
+            right: -420px;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background: #fff;
+            z-index: 2000;
+            transition: 0.4s;
+            padding: 30px;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .admin-trigger {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            opacity: 0.1;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo"><img src="logo.png" alt="KINTECH" onerror="this.parentElement.innerHTML='<b>KINTECH</b>'">
+        </div>
+        <div onclick="toggleCart()" style="cursor:pointer; font-size: 1.5rem; position: relative;">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span id="c-count"
+                style="position:absolute; top:-10px; right:-10px; background:#bcd821; font-size:12px; padding:2px 6px; border-radius:50%;">0</span>
+        </div>
+    </header>
+
+    <div class="hero">
+        <video autoplay muted loop playsinline id="hero-video">
+            <source src="hero_cooking.mp4" type="video/mp4">
+        </video>
+        <h1 style="position:relative; z-index:2; font-size: 3rem; letter-spacing: 2px;">PREMIUM SHOP</h1>
+    </div>
+
+    <div class="grid" id="main-grid"></div>
+
+    <div id="cart-side" class="sidebar">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h2>კალათა</h2>
+            <i class="fa-solid fa-xmark" onclick="toggleCart()" style="cursor:pointer; font-size:1.5rem;"></i>
+        </div>
+        <div id="cart-items" style="flex-grow:1; overflow-y:auto;"></div>
+        <div style="border-top:2px solid #eee; padding-top:20px; margin-top:20px;">
+            <div
+                style="display:flex; justify-content:space-between; font-size:1.3rem; font-weight:bold; margin-bottom:20px;">
+                <span>ჯამი:</span> <span id="total-price">0</span> ₾
+            </div>
+            <button class="btn" style="background:#25d366; padding:18px;" onclick="sendWA()">შეკვეთა
+                WhatsApp-ზე</button>
+        </div>
+    </div>
+
+    <button class="admin-trigger" onclick="adminLogin()">Admin Access</button>
+
+    <script>
+        // რეალური მონაცემების ნიმუში, რომ საიტი ცარიელი არ იყოს
+        const defaultData = [
+            { id: 1, name: "Sokany Air Fryer", price: "185", img: "https://m.media-amazon.com/images/I/61K8PjKj-FL._AC_SL1500_.jpg" },
+            { id: 2, name: "Sokany Coffee Maker", price: "120", img: "https://m.media-amazon.com/images/I/71m6k-O+NCL._AC_SL1500_.jpg" },
+            { id: 3, name: "Sokany Hand Blender", price: "65", img: "https://m.media-amazon.com/images/I/61y8B2zI1rL._AC_SL1500_.jpg" }
+        ];
+
+        // ვავსებთ 36-მდე თუ ცარიელია
+        let products = JSON.parse(localStorage.getItem('kintech_db_v2')) || defaultData;
+        if (products.length < 36) {
+            for (let i = products.length + 1; i <= 36; i++) {
+                products.push({ id: i, name: "პროდუქტი " + i, price: "0", img: "" });
+            }
+        }
+
+        let cart = [];
+        let isAdmin = false;
+
+        function render() {
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = products.map(p => `
+            <div class="card">
+                <img src="${p.img || 'https://via.placeholder.com/200?text=No+Image'}" onerror="this.src='https://via.placeholder.com/200?text=Error+Loading'">
+                <h3>${p.name}</h3>
+                <div class="price">${p.price} ₾</div>
+                <button class="btn" onclick="addToCart(${p.id})">კალათაში დამატება</button>
+                <div class="admin-edit" id="edit-${p.id}" style="display:${isAdmin ? 'block' : 'none'}">
+                    <input type="text" id="n-${p.id}" value="${p.name}" placeholder="სახელი">
+                    <input type="text" id="p-${p.id}" value="${p.price}" placeholder="ფასი">
+                    <input type="text" id="i-${p.id}" value="${p.img}" placeholder="სურათის ლინკი">
+                    <button class="btn" style="background:#444" onclick="saveItem(${p.id})">შენახვა</button>
+                </div>
+            </div>
+        `).join('');
+        }
+
+        function adminLogin() {
+            if (prompt("პაროლი:") === "1234") { isAdmin = !isAdmin; render(); }
+        }
+
+        function saveItem(id) {
+            let idx = products.findIndex(x => x.id === id);
+            products[idx].name = document.getElementById('n-' + id).value;
+            products[idx].price = document.getElementById('p-' + id).value;
+            products[idx].img = document.getElementById('i-' + id).value;
+            localStorage.setItem('kintech_db_v2', JSON.stringify(products));
+            alert("მონაცემები განახლდა!");
+            render();
+        }
+
+        function addToCart(id) {
+            let p = products.find(x => x.id === id);
+            cart.push({ ...p, cartId: Date.now() });
+            updateCart();
+            document.getElementById('cart-side').classList.add('open');
+        }
+
+        function updateCart() {
+            let total = 0;
+            document.getElementById('cart-items').innerHTML = cart.map(item => {
+                total += parseFloat(item.price) || 0;
+                return `<div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <span>${item.name}</span><b>${item.price} ₾</b>
+            </div>`;
+            }).join('');
+            document.getElementById('c-count').innerText = cart.length;
+            document.getElementById('total-price').innerText = total.toFixed(2);
+        }
+
+        function toggleCart() { document.getElementById('cart-side').classList.toggle('open'); }
+
+        function sendWA() {
+            if (cart.length === 0) return alert("კალათა ცარიელია");
+            let text = "გამარჯობა, მსურს შეკვეთა:\n" + cart.map(i => `- ${i.name} (${i.price} ₾)`).join("\n");
+            window.open("https://wa.me/9955XXXXXXXX?text=" + encodeURIComponent(text));
+        }
+
+        render();
+    </script>
+</body>
+
+</html>
