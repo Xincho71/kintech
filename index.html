@@ -19,6 +19,7 @@
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            transition: background 0.3s, color 0.3s;
         }
 
         body {
@@ -29,9 +30,9 @@
             overflow-x: hidden;
         }
 
-        /* NAV */
+        /* NAVIGATION */
         nav {
-            padding: 15px 6%;
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -39,7 +40,7 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--border);
         }
@@ -51,26 +52,27 @@
             letter-spacing: 4px;
             color: var(--gold);
             text-decoration: none;
+            cursor: pointer;
         }
 
         .cart-btn {
             background: var(--gold);
             color: #000;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 800;
             cursor: pointer;
         }
 
-        /* HERO - შენი ახალი სურათით */
+        /* HERO SECTION */
         .hero {
-            height: 50vh;
+            height: 55vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('image_ee887f.png');
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('image_ee887f.png');
             background-size: cover;
             background-position: center;
             text-align: center;
@@ -86,39 +88,46 @@
             line-height: 1.1;
         }
 
-        /* FILTERS */
+        /* CATEGORY FILTERS */
         .filters {
             padding: 20px 5%;
             display: flex;
             gap: 10px;
             overflow-x: auto;
             position: sticky;
-            top: 60px;
+            top: 65px;
             background: var(--bg);
             z-index: 900;
+            scrollbar-width: none;
+        }
+
+        .filters::-webkit-scrollbar {
+            display: none;
         }
 
         .f-btn {
             background: none;
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 8px 18px;
+            padding: 10px 22px;
             border-radius: 50px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             white-space: nowrap;
             cursor: pointer;
+            opacity: 0.7;
         }
 
         .f-btn.active {
             border-color: var(--gold);
             color: var(--gold);
             background: rgba(197, 160, 89, 0.1);
+            opacity: 1;
         }
 
-        /* GRID */
+        /* PRODUCT GRID */
         .grid {
             display: grid;
-            padding: 20px 5% 100px;
+            padding: 10px 5% 100px;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
@@ -126,47 +135,50 @@
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 15px;
             overflow: hidden;
-            transition: 0.3s;
+            cursor: pointer;
+            position: relative;
         }
 
         .img-box {
             width: 100%;
-            height: 200px;
+            height: 220px;
             background: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            overflow: hidden;
         }
 
         .img-box img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
+        /* აქ კეთდება Crop წარწერების დასამალად */
         .details {
             padding: 15px;
             text-align: center;
         }
 
         .details h3 {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             margin: 0 0 8px;
             font-weight: 400;
-            height: 38px;
+            height: 40px;
             overflow: hidden;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .details .price {
             color: var(--gold);
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
         }
 
-        /* DETAIL PAGE */
+        /* FULLSCREEN DETAIL VIEW */
         #detailPage {
             position: fixed;
             top: 0;
@@ -177,7 +189,7 @@
             z-index: 2000;
             transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow-y: auto;
-            padding: 30px 5%;
+            padding: 40px 5%;
         }
 
         #detailPage.open {
@@ -188,29 +200,38 @@
             background: none;
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 10px 20px;
-            border-radius: 30px;
-            margin-bottom: 20px;
+            padding: 12px 25px;
+            border-radius: 50px;
+            margin-bottom: 30px;
             cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 700;
         }
 
         .detail-img-box {
             background: #fff;
-            border-radius: 15px;
-            padding: 30px;
+            border-radius: 20px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .detail-img-box img {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: contain;
         }
 
         .detail-info h1 {
             font-family: 'Playfair Display';
             color: var(--gold);
+            font-size: 2.2rem;
             margin: 0 0 15px;
         }
 
-        /* CART */
+        /* CART PANEL */
         .cart-panel {
             position: fixed;
             top: 0;
@@ -219,8 +240,8 @@
             height: 100%;
             background: var(--bg);
             z-index: 3000;
-            transition: 0.3s;
-            padding: 30px;
+            transition: 0.3s ease;
+            padding: 35px;
             display: flex;
             flex-direction: column;
         }
@@ -233,12 +254,13 @@
             background: var(--gold);
             color: #000;
             border: none;
-            padding: 18px;
+            padding: 20px;
             font-weight: 800;
             cursor: pointer;
             width: 100%;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 0.9rem;
+            letter-spacing: 1px;
         }
 
         @media (min-width: 768px) {
@@ -247,12 +269,12 @@
             }
 
             .cart-panel {
-                width: 400px;
-                right: -400px;
+                width: 450px;
+                right: -450px;
             }
 
             .hero-content h1 {
-                font-size: 4rem;
+                font-size: 4.5rem;
             }
         }
     </style>
@@ -261,7 +283,7 @@
 <body>
 
     <nav>
-        <a href="#" class="logo" onclick="closeProduct()">KINTECH</a>
+        <div class="logo" onclick="closeProduct()">KINTECH</div>
         <button class="cart-btn" onclick="toggleCart()">კალათა (<span id="cartCount">0</span>)</button>
     </nav>
 
@@ -269,7 +291,7 @@
         <header class="hero">
             <div class="hero-content">
                 <span
-                    style="color:var(--gold); letter-spacing:8px; font-size:0.7rem; font-weight:700; display:block; margin-bottom:10px;">ESTABLISHED
+                    style="color:var(--gold); letter-spacing:8px; font-size:0.7rem; font-weight:700; display:block; margin-bottom:15px;">ESTABLISHED
                     2026</span>
                 <h1>The Elite Home Collection</h1>
             </div>
@@ -286,14 +308,14 @@
     </div>
 
     <div id="detailPage">
-        <button class="back-btn" onclick="closeProduct()">← უკან</button>
+        <button class="back-btn" onclick="closeProduct()">← კატალოგში დაბრუნება</button>
         <div class="detail-container">
-            <div class="detail-img-box"><img id="dImg" style="max-width:100%; max-height:400px;" src=""></div>
+            <div class="detail-img-box"><img id="dImg" src=""></div>
             <div class="detail-info">
                 <h1 id="dTitle"></h1>
-                <div id="dPrice" style="font-size: 2rem; font-weight: 700; margin-bottom: 20px; color:var(--gold);">
+                <div id="dPrice" style="font-size: 2.2rem; font-weight: 700; margin-bottom: 20px; color:var(--gold);">
                 </div>
-                <div id="dSpecs" style="margin-bottom: 30px; opacity: 0.8; line-height: 1.8; font-size: 1rem;"></div>
+                <div id="dSpecs" style="margin-bottom: 35px; opacity: 0.8; line-height: 2; font-size: 1.1rem;"></div>
                 <button id="addBtn" class="action-btn">კალათაში დამატება</button>
             </div>
         </div>
@@ -301,28 +323,27 @@
 
     <div class="cart-panel" id="cartPanel">
         <div
-            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; border-bottom:1px solid var(--border); padding-bottom:15px;">
-            <h2 style="font-family:'Playfair Display'; margin:0;">კალათა</h2>
-            <span style="cursor:pointer; font-size:2rem; color:var(--gold);" onclick="toggleCart()">&times;</span>
+            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px; border-bottom:1px solid var(--border); padding-bottom:20px;">
+            <h2 style="font-family:'Playfair Display'; margin:0; font-size:1.8rem;">შენი კალათა</h2>
+            <span style="cursor:pointer; font-size:2.5rem; color:var(--gold);" onclick="toggleCart()">&times;</span>
         </div>
         <div id="cartItems" style="flex-grow:1; overflow-y:auto;"></div>
-        <div style="padding-top:20px; border-top:1px solid var(--gold)">
+        <div style="padding-top:25px; border-top:1px solid var(--gold)">
             <div
-                style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:700; font-size:1.2rem;">
+                style="display:flex; justify-content:space-between; margin-bottom:20px; font-weight:700; font-size:1.4rem;">
                 <span>ჯამი:</span><span id="totalPrice">0.00 ₾</span>
             </div>
-            <button class="action-btn" onclick="checkoutWhatsApp()">შეკვეთა WHATSAPP-ით</button>
+            <button class="action-btn" onclick="checkoutWhatsApp()">გაფორმება WHATSAPP-ით</button>
         </div>
     </div>
 
     <script>
-        // მნიშვნელოვანი: სახელები უნდა ემთხვეოდეს GitHub-ზე ატვირთულ ფაილებს!
         const products = [
             { id: 1, cat: "Irons", name: "Sokany SK-11022 Steam Iron", price: 19.98, img: "Screenshot 2026-04-17 234816.png", specs: "• 1800W სიმძლავრე<br>• კერამიკული ძირი<br>• თვითწმენდის ფუნქცია" },
             { id: 2, cat: "Irons", name: "Sokany SK-11010 Dry Iron", price: 16.67, img: "Screenshot 2026-04-17 235319.png", specs: "• 1500W სიმძლავრე<br>• კლასიკური დაუთოება<br>• ტემპერატურის კონტროლი" },
-            { id: 3, cat: "Juicers", name: "Sokany JE-623D Premium", price: 18.53, img: "Screenshot 2026-04-18 000534.png", specs: "• მეტალის კორპუსი<br>• მარტივი რეცხვა" },
-            { id: 4, cat: "Juicers", name: "Sokany SK-190 Extractor", price: 98.61, img: "Screenshot 2026-04-18 000651.png", specs: "• 1200W პროფესიონალური<br>• 2 სიჩქარის რეჟიმი" },
-            { id: 5, cat: "Personal", name: "Sokany SK-2211 Pro Hair Dryer", price: 10.47, img: "Screenshot 2026-04-18 001113.png", specs: "• 2400W სიმძლავრე<br>• 3 ტემპერატურის რეჟიმი" }
+            { id: 3, cat: "Juicers", name: "Sokany JE-623D Premium", price: 18.53, img: "Screenshot 2026-04-18 000534.png", specs: "• მეტალის კორპუსი<br>• მარტივი რეცხვა<br>• ერგონომიული დიზაინი" },
+            { id: 4, cat: "Juicers", name: "Sokany SK-190 Juice Extractor", price: 98.61, img: "Screenshot 2026-04-18 000651.png", specs: "• 1200W პროფესიონალური ძრავა<br>• 2 სიჩქარის რეჟიმი" },
+            { id: 5, cat: "Personal", name: "Sokany SK-2211 Pro Hair Dryer", price: 10.47, img: "Screenshot 2026-04-18 001113.png", specs: "• 2400W სიმძლავრე<br>• 3 ტემპერატურის რეჟიმი<br>• იონური დაცვა" }
         ];
 
         let cart = [];
@@ -332,9 +353,9 @@
             const data = cat === 'All' ? products : products.filter(p => p.cat === cat);
             g.innerHTML = data.map(p => `
                 <div class="card" onclick="openProduct(${p.id})">
-                    <div class="img-box"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/200?text=Sokany'"></div>
+                    <div class="img-box"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400?text=Sokany'"></div>
                     <div class="details">
-                        <span style="font-size:0.6rem; color:var(--gold); font-weight:700; text-transform:uppercase;">${p.cat}</span>
+                        <span style="font-size:0.6rem; color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:1px;">${p.cat}</span>
                         <h3>${p.name}</h3>
                         <div class="price">${p.price.toFixed(2)} ₾</div>
                     </div>
@@ -366,13 +387,13 @@
             const itemsDiv = document.getElementById('cartItems');
             document.getElementById('cartCount').innerText = cart.length;
             itemsDiv.innerHTML = cart.map((item, index) => `
-                <div style="display:flex; gap:15px; margin-bottom:20px; align-items:center; border-bottom:1px solid var(--border); padding-bottom:10px;">
-                    <img src="${item.img}" style="width:50px; height:50px; background:#fff; border-radius:6px; object-fit:contain;">
+                <div style="display:flex; gap:15px; margin-bottom:20px; align-items:center; border-bottom:1px solid var(--border); padding-bottom:15px;">
+                    <img src="${item.img}" style="width:60px; height:60px; background:#fff; border-radius:8px; object-fit:contain;">
                     <div style="flex-grow:1">
-                        <div style="font-size:0.8rem; font-weight:700;">${item.name}</div>
-                        <div style="color:var(--gold); font-size:0.9rem;">${item.price.toFixed(2)} ₾</div>
+                        <div style="font-size:0.9rem; font-weight:700;">${item.name}</div>
+                        <div style="color:var(--gold); font-size:1rem;">${item.price.toFixed(2)} ₾</div>
                     </div>
-                    <span style="color:#ff4444; cursor:pointer; font-size:1.2rem;" onclick="removeFromCart(${index})">&times;</span>
+                    <span style="color:#ff4444; cursor:pointer; font-size:1.5rem;" onclick="removeFromCart(${index})">&times;</span>
                 </div>
             `).join('');
             const total = cart.reduce((sum, item) => sum + item.price, 0);
