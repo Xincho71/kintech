@@ -343,18 +343,21 @@
 
         let cart = [];
 
-        function render(cat) {
-            const g = document.getElementById('grid');
-            const data = cat === 'All' ? products : products.filter(p => p.cat === cat);
-            g.innerHTML = data.map(p => `
-                <div class="card" onclick="openProduct(${p.id})">
-                    <div class="img-box"><img src="${p.img}"></div>
-                    <div class="details">
-                        <h3>${p.name}</h3>
-                        <div class="price">${p.price.toFixed(2)} ₾</div>
-                    </div>
-                </div>
-            `).join('');
+      function render(cat) {
+    const g = document.getElementById('grid');
+    const data = cat === 'All' ? products : products.filter(p => p.cat === cat);
+    g.innerHTML = data.map(p => `
+        <div class="card" onclick="openProduct(${p.id})">
+            <div class="img-box">
+                <img src="${p.img}">
+            </div>
+            <div class="details">
+                <h3 style="font-size: 0.8rem; margin-bottom: 8px;">${p.name}</h3>
+                <div class="price">${p.price.toFixed(2)} ₾</div>
+            </div>
+        </div>
+    `).join('');
+}
         }
 
         function openProduct(id) {
