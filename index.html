@@ -395,12 +395,14 @@ header.scrolled{border-bottom-color:rgba(200,168,75,0.2)}
 .ai-search-box{
   background:var(--bg3);border:1px solid var(--line2);border-radius:12px;
   padding:14px 18px;display:flex;gap:12px;align-items:center;
-  transition:border-color .2s;margin-top:16px;
+  transition:border-color .2s;margin-top:16px;flex-wrap:wrap;
 }
 .ai-search-box:focus-within{border-color:var(--gold)}
 .ai-icon{font-size:1.1rem;flex-shrink:0}
-.ai-input{flex:1;background:none;border:none;color:var(--text);font-family:var(--sans);font-size:.88rem;outline:none}
+.ai-input{flex:1;background:none;border:none;color:var(--text);font-family:var(--sans);font-size:.88rem;outline:none;min-width:140px}
 .ai-input::placeholder{color:var(--dim)}
+.ai-key{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:.7rem;color:var(--dim2);font-family:var(--sans);outline:none;width:140px;transition:border-color .2s}
+.ai-key:focus{border-color:var(--gold)}
 .ai-btn{background:var(--gold);color:#000;border:none;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:background .2s}
 .ai-btn:hover{background:var(--gold2)}
 .ai-btn:disabled{opacity:.5;cursor:wait}
@@ -423,7 +425,7 @@ header.scrolled{border-bottom-color:rgba(200,168,75,0.2)}
 .modal-wrap.on{display:flex}
 .modal{background:var(--modal-bg);border:1px solid var(--line2);border-radius:16px;padding:28px 26px;text-align:center;max-width:360px;width:90%;animation:popIn .22s var(--spring)}
 .modal-title{font-family:var(--serif);color:var(--gold);font-size:1.1rem;margin-bottom:10px}
-.modal p{color:var(--dim2);font-size:.86rem;line-height:1.6;margin-bottom:20px}
+.modal p{color:var(--dim2);font-size:.86rem;line-height:1.6;margin-bottom:20px;white-space:pre-wrap}
 .modal-btns{display:flex;gap:10px}
 .modal-btns button{flex:1;padding:11px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .2s}
 .m-cancel{background:none;border:1px solid var(--line2);color:var(--dim2)}
@@ -463,6 +465,7 @@ footer p{font-size:.71rem;color:var(--dim)}
   .fr,.fr3{grid-template-columns:1fr}
   footer{flex-direction:column;text-align:center}
   .adm-tabs{flex-wrap:wrap}
+  .ai-search-box .ai-key{width:100%}
 }
 </style>
 </head>
@@ -532,6 +535,7 @@ footer p{font-size:.71rem;color:var(--dim)}
   <div class="ai-search-box">
     <span class="ai-icon">🤖</span>
     <input class="ai-input" id="ai-input" placeholder='მაგ: "კარგი ბიუჯეტური ლეპტოპი" ან "iPhone-ის ალტერნატივა"' autocomplete="off">
+    <input class="ai-key" id="ai-key" placeholder="Claude API Key (სურვილისამებრ)" type="password">
     <button class="ai-btn" id="ai-btn" onclick="aiSearch()">AI ძიება</button>
   </div>
   <div class="ai-result" id="ai-result"></div>
@@ -682,7 +686,7 @@ footer p{font-size:.71rem;color:var(--dim)}
       </div>
       <div class="fg">
         <label>დამატებითი ფოტოები (მძიმით)</label>
-        <input type="text" id="p-imgs" placeholder="img2.jpg, img3.jpg">
+        <input type="text" id="p-imgs" placeholder="img2.jpg, img3.jpg" oninput="updatePhotoPreview()">
         <div class="photo-list" id="photo-preview"></div>
       </div>
       <button class="btn-primary" style="width:100%;margin-top:6px;padding:13px" onclick="addProd()">+ პროდუქტის დამატება</button>
@@ -836,7 +840,8 @@ function render(){
   if(admOn)renderAdm();
 }
 
-function cyclePhoto(id,idx){
+/* ─── cyclePhoto (გლობალური) ─── */
+window.cyclePhoto = function(id, idx){
   const p=prods.find(x=>x.id===id);
   if(!p||!p.imgs)return;
   const img=document.getElementById(`ci-img-${id}`);
@@ -845,7 +850,7 @@ function cyclePhoto(id,idx){
     const d=document.getElementById(`cd-${id}-${j}`);
     if(d)d.classList.toggle('on',j===idx);
   });
-}
+};
 
 function buildChips(){
   const cats=['all',...new Set(prods.map(p=>p.cat).filter(Boolean))];
@@ -856,7 +861,7 @@ function buildChips(){
     const b=document.createElement('button');
     b.className='chip'+(c===filt?' on':'');
     b.textContent=c==='all'?'ყველა':c;
-    b.onclick=function(){setFilter(c)};
+    b.onclick=function(e){setFilter(c); if(window.innerWidth<=680) toggleMob(); };
     bar.appendChild(b);
   });
   bar.appendChild(sel);
@@ -873,8 +878,9 @@ function openDet(id){
   detP=p;detQ=1;detPhotos=p.imgs&&p.imgs.length?p.imgs:[p.img];detPhotoIdx=0;
   document.getElementById('det-name').textContent=p.name;
   // main photo
-  document.getElementById('det-main-photo').src=detPhotos[0];
-  document.getElementById('det-main-photo').onerror=function(){this.style.display='none'};
+  const mainImg=document.getElementById('det-main-photo');
+  mainImg.src=detPhotos[0];
+  mainImg.onerror=function(){ this.style.display='none'; };
   // thumbs
   const th=document.getElementById('det-thumbs');
   th.innerHTML=detPhotos.length>1?detPhotos.map((img,i)=>`
@@ -1020,7 +1026,7 @@ function addToCart(p,qty){
   toast(`✓ ${p.name}${qty>1?` ×${qty}`:''} — კალათაში!`);
 }
 function removeCI(cid){cart=cart.filter(i=>i.cid!==cid);sv(CK,cart);updateCart()}
-function clearCart(){if(!cart.length)return;confirm2('კალათა გაიწმინდება?','გასუფთავება',()=>{cart=[];sv(CK,cart);updateCart();toast('კალათა გასუფთავდა')})}
+function clearCart(){if(!cart.length)return;showModal('კალათა გაიწმინდება?','', '', [{txt:'გაუქმება',cls:'m-cancel',cb:closeModal},{txt:'გასუფთავება',cls:'m-ok',cb:()=>{cart=[];sv(CK,cart);updateCart();toast('კალათა გასუფთავდა');closeModal()}}])}
 function updateCart(){
   const total=cart.reduce((s,i)=>s+i.price,0);
   document.getElementById('cbadge').textContent=cart.length;
@@ -1065,33 +1071,47 @@ function notifyMe(id){
   );
 }
 
-/* ════ AI SEARCH ════ */
+/* ════ AI SEARCH (გასწორებული) ════ */
 async function aiSearch(){
   const q=document.getElementById('ai-input').value.trim();
+  const key=document.getElementById('ai-key').value.trim();
+  const res=document.getElementById('ai-result');
+  res.classList.remove('on');
   if(!q){toast('⚠ შეიყვანე ძიების ტექსტი');return}
   const btn=document.getElementById('ai-btn');
   btn.disabled=true;btn.textContent='ეძებს...';
-  const res=document.getElementById('ai-result');
-  res.classList.remove('on');
+
+  // თუ API key არ არის – ვაჩვენოთ დემო პასუხი
+  if(!key){
+    res.innerHTML='🤖 AI ძიებისთვის საჭიროა Claude API Key. ჩაწერეთ ზემოთ ან სცადეთ მოგვიანებით.';
+    res.classList.add('on');
+    btn.disabled=false;btn.textContent='AI ძიება';
+    return;
+  }
 
   const catalog=prods.map(p=>`${p.name} (${p.cat}, ${p.price}₾, rating:${p.rating||'N/A'}, stock:${p.stock!==undefined?p.stock:'?'})`).join('\n');
 
   try{
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01'
+      },
       body:JSON.stringify({
-        model:'claude-sonnet-4-6',
+        model:'claude-3-5-sonnet-20241022',
         max_tokens:400,
         system:`შენ ხარ KINTECH-ის AI დამხმარე. კატალოგი:\n${catalog}\n\nმომხმარებლის კითხვაზე გასცე მოკლე (2-4 წინადადება) ქართული პასუხი. თუ პროდუქტი შესაფერისია — მოიყვანე სახელი <strong> ტეგებში. გამოიყენე emoji.`,
         messages:[{role:'user',content:q}]
       })
     });
     const data=await resp.json();
+    if(!resp.ok){throw new Error(data.error?.message||'API შეცდომა')}
     const txt=data.content?.[0]?.text||'პასუხი ვერ მოვიძიე.';
     res.innerHTML=txt;res.classList.add('on');
   }catch(e){
-    res.innerHTML='🤖 AI ძიება ვერ დაუკავშირდა. გთხოვ სცადე მოგვიანებით.';
+    res.innerHTML='🤖 AI ძიება ვერ შესრულდა: '+e.message;
     res.classList.add('on');
   }
   btn.disabled=false;btn.textContent='AI ძიება';
@@ -1114,6 +1134,15 @@ function switchTab(name,btn){
   document.getElementById('tab-'+name).classList.add('on');
   if(name==='stats')renderStats();
 }
+
+/* ─── photo preview ─── */
+function updatePhotoPreview(){
+  const val=document.getElementById('p-imgs').value;
+  const parts=val.split(',').map(s=>s.trim()).filter(Boolean);
+  const container=document.getElementById('photo-preview');
+  container.innerHTML=parts.map(p=>`<span class="photo-tag">📷 ${p}</span>`).join('');
+}
+
 function addProd(){
   const name=document.getElementById('p-name').value.trim();
   const price=parseInt(document.getElementById('p-price').value);
@@ -1129,14 +1158,14 @@ function addProd(){
   prods.push({id:nid++,name,price,img,imgs,cat,isNew:true,stock,rating,rcount,reviews:[]});
   sv(SK,prods);
   ['p-name','p-price','p-img','p-imgs','p-stock','p-rating','p-rcount'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('photo-preview').innerHTML='';
   render();toast('✓ პროდუქტი დაემატა');
 }
-function delProd(id){
-  const p=prods.find(x=>x.id===id);
-  confirm2(`წაიშლება: "${p?.name}"?','წაშლა',()=>{prods=prods.filter(x=>x.id!==id);sv(SK,prods);render();toast('პროდუქტი წაიშალა')}`);
+
+function delProdOk(id){
+  prods=prods.filter(x=>x.id!==id);
+  sv(SK,prods);render();renderAdm();toast('პროდუქტი წაიშალა');closeModal();
 }
-// fix: proper call
-function delProdOk(id){prods=prods.filter(x=>x.id!==id);sv(SK,prods);render();renderAdm();toast('პროდუქტი წაიშალა');closeModal()}
 function toggleStock(id){
   const p=prods.find(x=>x.id===id);if(!p)return;
   p.stock=p.stock===0?10:0;
@@ -1192,12 +1221,6 @@ function showModal(title,msg,extraHtml,btns){
     document.getElementById('modal-btns').appendChild(el);
   });
   document.getElementById('modal').classList.add('on');
-}
-function confirm2(msg,okTxt,cb){
-  showModal('დადასტურება',msg,'',[
-    {txt:'გაუქმება',cls:'m-cancel',cb:closeModal},
-    {txt:okTxt,cls:'m-ok',cb:()=>{closeModal();cb&&cb()}}
-  ]);
 }
 function closeModal(){document.getElementById('modal').classList.remove('on')}
 
